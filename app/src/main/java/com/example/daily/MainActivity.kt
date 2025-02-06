@@ -34,14 +34,14 @@ class MainActivity : ComponentActivity() {
             DailyTheme {
                 Scaffold {
                     Column(modifier = Modifier.padding(it)) {
-                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                            Button( {} ) {
-                                Image(painter = painterResource(R.drawable.account_image), "Account", Modifier.size(30.dp))
-                            }
-                            Button( {} ) {
-                                Image(painter = painterResource(R.drawable.settings_image), "setting", Modifier.size(30.dp))
-                            }
-                        }
+//                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+//                            Button( {} ) {
+//                                Image(painter = painterResource(R.drawable.account_image), "Account", Modifier.size(30.dp))
+//                            }
+//                            Button( {} ) {
+//                                Image(painter = painterResource(R.drawable.settings_image), "setting", Modifier.size(30.dp))
+//                            }
+//                        }
                         InventoryScreen()
                     }
                 }
