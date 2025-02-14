@@ -11,40 +11,33 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.example.daily.currentUser
 import com.example.daily.custom.ItemData
+import com.example.daily.custom.Print
 import com.example.daily.ui.theme.Blue
 import com.example.daily.ui.theme.Green
-import com.example.daily.ui.theme.LightBlue
-import com.example.daily.ui.theme.LightGreen
-import com.example.daily.ui.theme.LightPurple
-import com.example.daily.ui.theme.LightRed
 import com.example.daily.ui.theme.LightYellow
 import com.example.daily.ui.theme.Purple
 import com.example.daily.ui.theme.Red
 import com.example.daily.ui.theme.Yellow
-import kotlin.math.floor
 
 var scale = mutableIntStateOf(1)
 var isItemDescription = mutableStateOf<ItemData?>(null)
@@ -153,23 +146,15 @@ fun PrintInventory1() {
         columns = GridCells.Adaptive(minSize = 120.dp)
     ) {
         for (el in currentUser.inventory1) {
-            val boxColor = when (el.key.rare) {
-                ItemData.ItemRare.Usual -> listOf(Color.DarkGray, Color.Gray)
-                ItemData.ItemRare.Rare -> listOf(Green, LightGreen)
-                ItemData.ItemRare.UnRare -> listOf(Blue, LightBlue)
-                ItemData.ItemRare.Epic -> listOf(Purple, LightPurple)
-                ItemData.ItemRare.Mythic -> listOf(Red, LightRed)
-                ItemData.ItemRare.Legendary -> listOf(LightRed, Yellow)
-                ItemData.ItemRare.Secret -> listOf(LightGreen, LightBlue)
-            }
             item {
-                Column(modifier = Modifier
-                    .border(1.dp, color = Color.Gray)
-                    .background(brush = Brush.radialGradient(boxColor))
-                    .clickable{ isItemDescription.value = el.key }
+                Box(modifier = Modifier.border(1.dp, color = Color.Gray),
                 ) {
-                    Image(painter = painterResource(el.key.iconId), el.key.name)
-                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                    el.key.Print(
+                        backgroundModifier = Modifier
+                            .clickable{ isItemDescription.value = el.key }
+                            .size(120.dp)
+                    )
+                    Row(modifier = Modifier.fillMaxWidth().align(Alignment.BottomEnd), horizontalArrangement = Arrangement.SpaceBetween) {
                         Text(el.key.name)
                         Text("${el.value}")
                     }
@@ -226,39 +211,50 @@ fun PrintItemDescription(item: ItemData) {
         onDismissRequest = { },
         title = { Text("Описание предмета") },
         text = {
-            Column {
-                Text("Название:${item.name}")
-                Text("Тип: ${
-                    when (item.content::class.simpleName) {
-                        "Hat" -> "Шапка"
-                        "Shirt" -> "Рубашка"
-                        "Trousers" -> "Штаны"
-                        "Shoes" -> "Обувь"
-                        else -> "error"
-                    }
-                }")
-                Row {
-                    Text("Редкость: ")
+            LazyColumn {
+                item {
+                    item.Print()
+                }
+                item{
+                    Text("Название:${item.name}")
+                }
+                item {
                     Text(
-                        when (item.rare) {
-                            ItemData.ItemRare.Usual -> "Обычный"
-                            ItemData.ItemRare.Rare -> "Редкий"
-                            ItemData.ItemRare.UnRare -> "Супер редкий"
-                            ItemData.ItemRare.Epic -> "Эпический"
-                            ItemData.ItemRare.Mythic -> "Мифический"
-                            ItemData.ItemRare.Legendary -> "Легендарный"
-                            ItemData.ItemRare.Secret -> "Лимитированый"
-                        },
-                        color = when(item.rare) {
-                            ItemData.ItemRare.Usual -> Color.Unspecified
-                            ItemData.ItemRare.Rare -> Green
-                            ItemData.ItemRare.UnRare -> Blue
-                            ItemData.ItemRare.Epic -> Purple
-                            ItemData.ItemRare.Mythic -> Red
-                            ItemData.ItemRare.Legendary -> Yellow
-                            ItemData.ItemRare.Secret -> Color.Cyan
-                        }
+                        "Тип: ${
+                            when (item.content::class.simpleName) {
+                                "Hat" -> "Шапка"
+                                "Shirt" -> "Рубашка"
+                                "Trousers" -> "Штаны"
+                                "Shoes" -> "Обувь"
+                                else -> "error"
+                            }
+                        }"
                     )
+                }
+                item {
+                    Row {
+                        Text("Редкость: ")
+                        Text(
+                            when (item.rare) {
+                                ItemData.ItemRare.Usual -> "Обычный"
+                                ItemData.ItemRare.Rare -> "Редкий"
+                                ItemData.ItemRare.UnRare -> "Супер редкий"
+                                ItemData.ItemRare.Epic -> "Эпический"
+                                ItemData.ItemRare.Mythic -> "Мифический"
+                                ItemData.ItemRare.Legendary -> "Легендарный"
+                                ItemData.ItemRare.Secret -> "Лимитированый"
+                            },
+                            color = when (item.rare) {
+                                ItemData.ItemRare.Usual -> Color.Unspecified
+                                ItemData.ItemRare.Rare -> Green
+                                ItemData.ItemRare.UnRare -> Blue
+                                ItemData.ItemRare.Epic -> Purple
+                                ItemData.ItemRare.Mythic -> Red
+                                ItemData.ItemRare.Legendary -> Yellow
+                                ItemData.ItemRare.Secret -> Color.Cyan
+                            }
+                        )
+                    }
                 }
 
             }
