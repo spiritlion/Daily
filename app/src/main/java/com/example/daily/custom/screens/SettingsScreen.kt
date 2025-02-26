@@ -20,7 +20,7 @@ import androidx.compose.ui.graphics.Color
 fun SettingsScreen(modifier: Modifier = Modifier) {
     val useSystemTheme = remember { mutableStateOf(true) }
     val darkThemeEnabled = remember { mutableStateOf(false) }
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = modifier.fillMaxSize()) {
         Text(
             "Внимание, здесь пока что-то только визуальная часть. Эти настройки не на что не влияют",
             color = Color.Red

@@ -22,7 +22,7 @@ var users = listOf(
             tester7 to 4,
             tester8 to 999
         ),
-        inventory2 =  mutableMapOf(testerCase to 10),
+        inventory2 =  mutableMapOf(testerCase1 to 10),
         achievements = mutableMapOf(
             testA1 to testData
         )
