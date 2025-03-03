@@ -7,6 +7,7 @@ var testData = LocalDate.now()
 var users = listOf(
     UserData(
         nickname = "User1",
+        moneys = 100.01f,
         avatar = AvatarData(
             hat = tester2,
             shirt = tester3,

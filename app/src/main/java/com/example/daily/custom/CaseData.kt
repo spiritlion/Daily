@@ -20,7 +20,7 @@ data class CaseData(
 
 @Composable
 fun CaseData.Print(modifier: Modifier = Modifier) {
-    Column(modifier = modifier.clickable {  }, horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
         Image(painter = painterResource(imageId), name)
         Text(name)
     }
